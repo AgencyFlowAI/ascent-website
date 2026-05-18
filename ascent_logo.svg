@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0f0f1a"/>
+    </linearGradient>
+    <linearGradient id="chevron-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0e4ea"/>
+      <stop offset="100%" stop-color="#8899bb"/>
+    </linearGradient>
+    <linearGradient id="border-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4a6fa5"/>
+      <stop offset="100%" stop-color="#2a3f65"/>
+    </linearGradient>
+    <clipPath id="hex-clip">
+      <polygon points="200,14 368,97 368,303 200,386 32,303 32,97"/>
+    </clipPath>
+  </defs>
+
+  <polygon points="200,6 376,93 376,307 200,394 24,307 24,93" fill="url(#border-grad)"/>
+  <polygon points="200,14 368,97 368,303 200,386 32,303 32,97" fill="url(#bg)"/>
+
+  <g clip-path="url(#hex-clip)">
+    <polygon points="200,75 310,215 280,215 200,117 120,215 90,215" fill="url(#chevron-grad)" opacity="0.9"/>
+    <polygon points="200,120 290,235 265,235 200,162 135,235 110,235" fill="#4a6fa5" opacity="0.35"/>
+  </g>
+
+  <text x="200" y="295" text-anchor="middle" font-family="'Quadrillion', 'Arial', sans-serif" font-size="48" font-weight="600" letter-spacing="12" fill="#e0e4ea">ASCENT</text>
+</svg>
