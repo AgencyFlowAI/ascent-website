@@ -1665,6 +1665,14 @@ function switchTab(tabName) {
 
     window.scrollTo({ top: 0, behavior: 'instant' });
 
+    // Update URL and title
+    const basePath = '/ascent-website/';
+    const urlPath = tabName === 'home' ? basePath : basePath + tabName;
+    document.title = tabName === 'home' ? 'ASCENT' : 'ASCENT - ' + tabName.toUpperCase();
+    if (window.location.pathname !== urlPath) {
+        history.pushState({ tab: tabName }, '', urlPath);
+    }
+
     // Re-observe reveals in the new tab
     target.querySelectorAll('.reveal').forEach(el => {
         el.classList.remove('visible');
@@ -1682,6 +1690,24 @@ tabs.forEach(t => {
         e.preventDefault();
         switchTab(t.dataset.tab);
     });
+});
+
+// URL routing - load correct tab from path or SPA redirect
+let initPath = sessionStorage.getItem('spa-redirect');
+if (initPath) {
+    sessionStorage.removeItem('spa-redirect');
+    history.replaceState(null, '', initPath);
+}
+const pathTab = (initPath || window.location.pathname).replace('/ascent-website/', '').replace('/', '') || 'home';
+const validTabs = ['home', 'vehicles', 'roadmap', 'live', 'mission', 'about'];
+if (validTabs.includes(pathTab) && pathTab !== 'home') {
+    switchTab(pathTab);
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+    const tab = e.state?.tab || 'home';
+    switchTab(tab);
 });
 
 // Stars
