@@ -1870,7 +1870,7 @@ function lerpSim(t) {
             const f = (t - a[0]) / (b[0] - a[0]);
             const dt = b[0] - a[0];
             const dv = b[2] - a[2];
-            const accelG = dt > 0 ? (dv / dt) / 9.81 : 0;
+            const accelG = dt > 0 ? (dv / dt) / 9.81 + 1 : 1;
             return [
                 t,
                 a[1] + (b[1] - a[1]) * f,
