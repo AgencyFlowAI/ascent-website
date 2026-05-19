@@ -897,6 +897,270 @@
         .footer-col a:first-child { margin-left: 0; }
         .footer-col a:hover { color: var(--light); }
 
+        /* LIVE TELEMETRY */
+        .live-header {
+            padding: 5rem 3rem 2rem;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-header h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -1px;
+        }
+
+        .live-status-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: livePulse 2s ease-in-out infinite;
+        }
+
+        .live-dot.sim { background: #fbbf24; }
+        .live-dot.offline { background: #f87171; animation: none; }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+        }
+
+        .live-status-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--green);
+        }
+
+        .live-status-text.sim { color: #fbbf24; }
+
+        .telem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .telem-card {
+            padding: 2.5rem 3rem;
+            border-right: 1px solid var(--line);
+            transition: background 0.3s;
+        }
+
+        .telem-card:last-child { border-right: none; }
+        .telem-card:hover { background: #060606; }
+
+        .telem-card .label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 0.75rem;
+        }
+
+        .telem-card .value {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .telem-card .value .u {
+            font-size: 0.4em;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        .telem-card .sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            margin-top: 0.5rem;
+        }
+
+        .alt-display {
+            padding: 4rem 3rem;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .alt-number {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+            min-width: 300px;
+        }
+
+        .alt-number .u {
+            font-size: 0.3em;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        .alt-bar-container {
+            flex: 1;
+            height: 200px;
+            position: relative;
+            border-left: 1px solid #1a1a1a;
+        }
+
+        .alt-bar-track {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .alt-bar-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, var(--green), rgba(74, 222, 128, 0.1));
+            transition: height 0.3s ease;
+        }
+
+        .alt-bar-target {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            border-top: 1px dashed #333;
+        }
+
+        .alt-bar-target-label {
+            position: absolute;
+            right: 0;
+            top: -16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--dim);
+        }
+
+        .telem-timeline {
+            background: #050505;
+            padding: 2rem 3rem;
+            border-bottom: 1px solid var(--line);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            color: var(--dim);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .telem-timeline .event {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .telem-timeline .t {
+            color: var(--green);
+            min-width: 80px;
+        }
+
+        .telem-timeline .msg { color: var(--fg); }
+        .telem-timeline .dim { color: var(--dim); }
+
+        .ground-cam {
+            padding: 4rem 3rem;
+            border-bottom: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .ground-cam .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 6px;
+            color: var(--dim);
+            margin-bottom: 2rem;
+        }
+
+        .cam-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16/9;
+            background: #080808;
+            border: 1px solid #151515;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cam-placeholder .text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #333;
+        }
+
+        .cam-scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(74, 222, 128, 0.1);
+            animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .telem-footer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .telem-footer-cell {
+            padding: 1.5rem 3rem;
+            border-right: 1px solid var(--line);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            letter-spacing: 1px;
+        }
+
+        .telem-footer-cell:last-child { border-right: none; }
+        .telem-footer-cell .val { color: var(--green); }
+
+        @media (max-width: 900px) {
+            .telem-grid { grid-template-columns: 1fr; }
+            .telem-card { border-right: none; border-bottom: 1px solid var(--line); }
+            .telem-card:last-child { border-bottom: none; }
+            .alt-display { flex-direction: column; gap: 2rem; padding: 3rem 1.5rem; }
+            .alt-number { min-width: auto; }
+            .alt-bar-container { width: 100%; height: 120px; }
+            .telem-footer { grid-template-columns: 1fr; }
+            .telem-footer-cell { border-right: none; border-bottom: 1px solid var(--line); }
+            .telem-footer-cell:last-child { border-bottom: none; }
+            .live-header { padding: 3rem 1.5rem 1.5rem; }
+            .ground-cam { padding: 3rem 1.5rem; }
+        }
+
         /* REVEAL */
         .reveal {
             opacity: 0;
@@ -993,6 +1257,7 @@
             <a data-tab="home" class="tab-btn active">Home</a>
             <a data-tab="vehicles" class="tab-btn">Vehicles</a>
             <a data-tab="roadmap" class="tab-btn">Roadmap</a>
+            <a data-tab="live" class="tab-btn">Live</a>
             <a data-tab="mission" class="tab-btn">Mission</a>
             <a data-tab="about" class="tab-btn">About</a>
         </div>
@@ -1230,6 +1495,94 @@
 
 </div>
 
+<!-- ==================== LIVE ==================== -->
+<div class="tab-panel" id="tab-live">
+
+    <div class="live-header">
+        <h2>Live Telemetry</h2>
+        <div class="live-status-bar">
+            <div class="live-dot sim" id="live-dot"></div>
+            <span class="live-status-text sim" id="live-status">SIMULATION MODE</span>
+        </div>
+    </div>
+
+    <!-- Altitude display -->
+    <div class="alt-display">
+        <div>
+            <div style="font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 4px; color: var(--dim); margin-bottom: 0.75rem;">ALTITUDE</div>
+            <div class="alt-number" id="telem-alt">0 <span class="u">M</span></div>
+        </div>
+        <div class="alt-bar-container">
+            <div class="alt-bar-track">
+                <div class="alt-bar-fill" id="alt-bar" style="height: 0%;"></div>
+                <div class="alt-bar-target" style="bottom: 100%;">
+                    <span class="alt-bar-target-label">1,000m TARGET</span>
+                </div>
+                <div class="alt-bar-target" style="bottom: 78%;">
+                    <span class="alt-bar-target-label">785m SIM APOGEE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telemetry cards -->
+    <div class="telem-grid">
+        <div class="telem-card">
+            <div class="label">Velocity</div>
+            <div class="value" id="telem-vel">0 <span class="u">M/S</span></div>
+            <div class="sub" id="telem-mach">MACH 0.00</div>
+        </div>
+        <div class="telem-card">
+            <div class="label">Acceleration</div>
+            <div class="value" id="telem-accel">0 <span class="u">G</span></div>
+            <div class="sub" id="telem-phase">PRE-LAUNCH</div>
+        </div>
+        <div class="telem-card">
+            <div class="label">Mission Time</div>
+            <div class="value" id="telem-time">T-00:00</div>
+            <div class="sub" id="telem-event">AWAITING IGNITION</div>
+        </div>
+    </div>
+
+    <!-- Second row -->
+    <div class="telem-grid">
+        <div class="telem-card">
+            <div class="label">Max Altitude</div>
+            <div class="value" id="telem-maxalt">0 <span class="u">M</span></div>
+        </div>
+        <div class="telem-card">
+            <div class="label">Max Velocity</div>
+            <div class="value" id="telem-maxvel">0 <span class="u">M/S</span></div>
+        </div>
+        <div class="telem-card">
+            <div class="label">Downrange</div>
+            <div class="value" id="telem-range">0 <span class="u">M</span></div>
+        </div>
+    </div>
+
+    <!-- Event timeline -->
+    <div class="telem-timeline" id="telem-log">
+        <div class="event"><span class="t">T-00:00</span><span class="dim">System initialised. Awaiting launch sequence.</span></div>
+    </div>
+
+    <!-- Ground camera -->
+    <div class="ground-cam">
+        <div class="tag">GROUND CAMERA</div>
+        <div class="cam-placeholder">
+            <div class="cam-scanline"></div>
+            <span class="text">FEED AVAILABLE ON LAUNCH DAY</span>
+        </div>
+    </div>
+
+    <!-- Footer stats -->
+    <div class="telem-footer">
+        <div class="telem-footer-cell">VEHICLE: <span class="val">PF-1 "GRACE"</span></div>
+        <div class="telem-footer-cell">ENGINE: <span class="val">PFV-1 HYBRID G27</span></div>
+        <div class="telem-footer-cell">SIGNAL: <span class="val" id="telem-signal">LORA 868MHZ / 1HZ</span></div>
+    </div>
+
+</div>
+
 <!-- ==================== MISSION ==================== -->
 <div class="tab-panel" id="tab-mission">
 
@@ -1461,6 +1814,156 @@ const obs = new IntersectionObserver((entries) => {
 }, { threshold: 0.05 });
 
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Live telemetry simulation
+const SIM_PROFILE = [
+    // [time_s, alt_m, vel_ms, accel_g, phase, event]
+    [0, 0, 0, 0, "IGNITION", "IGNITION - Pc 17.7 bar"],
+    [0.1, 0.1, 2, 2.0, "POWERED FLIGHT", "LIFTOFF - 28.0 N"],
+    [1, 12, 12, 2.0, "POWERED FLIGHT", "RAIL CLEAR - 12 m/s"],
+    [3, 80, 45, 2.0, "POWERED FLIGHT", null],
+    [5, 210, 80, 2.0, "POWERED FLIGHT", null],
+    [8, 520, 130, 2.0, "POWERED FLIGHT", null],
+    [10, 680, 160, 2.0, "POWERED FLIGHT", null],
+    [13, 920, 184, 0, "BURNOUT", "BURNOUT - 184 m/s"],
+    [18, 750, 140, -1, "COAST", null],
+    [25, 700, 90, -1, "COAST", null],
+    [30, 760, 50, -1, "COAST", null],
+    [35, 780, 15, -1, "COAST", null],
+    [38, 785, 0, -1, "APOGEE", "APOGEE - 785m AGL"],
+    [38.1, 785, -2, -1, "DESCENT", "DROGUE DEPLOY - OK"],
+    [42, 720, -12, -0.2, "DESCENT", null],
+    [48, 500, -12, -0.1, "DESCENT", null],
+    [55, 200, -10, -0.1, "DESCENT", "MAIN DEPLOY @ 200m - OK"],
+    [60, 120, -5, -0.05, "DESCENT", null],
+    [70, 40, -4, -0.02, "DESCENT", null],
+    [82, 0, 0, 0, "LANDED", "LANDING - 300m downrange"],
+];
+
+let simRunning = false;
+let simStart = 0;
+let simMaxAlt = 0;
+let simMaxVel = 0;
+let simLoggedEvents = new Set();
+
+function lerpSim(t) {
+    if (t <= SIM_PROFILE[0][0]) return SIM_PROFILE[0];
+    if (t >= SIM_PROFILE[SIM_PROFILE.length - 1][0]) return SIM_PROFILE[SIM_PROFILE.length - 1];
+    for (let i = 0; i < SIM_PROFILE.length - 1; i++) {
+        const a = SIM_PROFILE[i], b = SIM_PROFILE[i + 1];
+        if (t >= a[0] && t <= b[0]) {
+            const f = (t - a[0]) / (b[0] - a[0]);
+            return [
+                t,
+                a[1] + (b[1] - a[1]) * f,
+                a[2] + (b[2] - a[2]) * f,
+                a[3] + (b[3] - a[3]) * f,
+                b[4],
+                null
+            ];
+        }
+    }
+    return SIM_PROFILE[0];
+}
+
+function formatMET(s) {
+    const sign = s < 0 ? '-' : '+';
+    const abs = Math.abs(s);
+    const m = Math.floor(abs / 60);
+    const sec = Math.floor(abs % 60);
+    return `T${sign}${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function addLogEvent(time, msg) {
+    const key = time + msg;
+    if (simLoggedEvents.has(key)) return;
+    simLoggedEvents.add(key);
+    const log = document.getElementById('telem-log');
+    const div = document.createElement('div');
+    div.className = 'event';
+    div.innerHTML = `<span class="t">${formatMET(time)}</span><span class="msg">${msg}</span>`;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+}
+
+function updateTelem() {
+    if (!simRunning) return;
+    const elapsed = (Date.now() - simStart) / 1000;
+    const t = Math.min(elapsed, SIM_PROFILE[SIM_PROFILE.length - 1][0]);
+
+    const [time, alt, vel, accel, phase] = lerpSim(t);
+
+    // Check for events at this time
+    for (const p of SIM_PROFILE) {
+        if (p[0] <= t && p[5]) {
+            addLogEvent(p[0], p[5]);
+        }
+    }
+
+    const absAlt = Math.max(0, Math.round(alt));
+    const absVel = Math.abs(Math.round(vel));
+    simMaxAlt = Math.max(simMaxAlt, absAlt);
+    simMaxVel = Math.max(simMaxVel, absVel);
+
+    document.getElementById('telem-alt').innerHTML = `${absAlt.toLocaleString()} <span class="u">M</span>`;
+    document.getElementById('telem-vel').innerHTML = `${absVel} <span class="u">M/S</span>`;
+    document.getElementById('telem-accel').innerHTML = `${Math.abs(accel).toFixed(1)} <span class="u">G</span>`;
+    document.getElementById('telem-time').textContent = formatMET(t);
+    document.getElementById('telem-phase').textContent = phase;
+    document.getElementById('telem-maxalt').innerHTML = `${simMaxAlt.toLocaleString()} <span class="u">M</span>`;
+    document.getElementById('telem-maxvel').innerHTML = `${simMaxVel} <span class="u">M/S</span>`;
+    document.getElementById('telem-mach').textContent = `MACH ${(absVel / 343).toFixed(2)}`;
+
+    const downrange = Math.min(300, Math.round(t * 3.66));
+    document.getElementById('telem-range').innerHTML = `${downrange} <span class="u">M</span>`;
+
+    const barPct = Math.min(100, (absAlt / 1000) * 100);
+    document.getElementById('alt-bar').style.height = barPct + '%';
+
+    if (phase === 'LANDED') {
+        document.getElementById('telem-event').textContent = 'MISSION COMPLETE';
+        document.getElementById('telem-phase').textContent = 'LANDED';
+        addLogEvent(82, 'MISSION COMPLETE - ALL NOMINAL');
+        return;
+    }
+
+    if (phase === 'APOGEE') {
+        document.getElementById('telem-event').textContent = 'APOGEE REACHED';
+    } else if (phase === 'DESCENT') {
+        document.getElementById('telem-event').textContent = 'UNDER PARACHUTE';
+    } else if (phase === 'POWERED FLIGHT') {
+        document.getElementById('telem-event').textContent = 'ENGINE FIRING';
+    } else if (phase === 'COAST') {
+        document.getElementById('telem-event').textContent = 'COASTING';
+    } else if (phase === 'BURNOUT') {
+        document.getElementById('telem-event').textContent = 'ENGINE CUTOFF';
+    }
+
+    requestAnimationFrame(updateTelem);
+}
+
+function startSim() {
+    simRunning = true;
+    simStart = Date.now();
+    simMaxAlt = 0;
+    simMaxVel = 0;
+    simLoggedEvents.clear();
+    document.getElementById('telem-log').innerHTML = '';
+    addLogEvent(0, 'SIMULATION STARTED - Flight profile: PF-1 nominal');
+    addLogEvent(0, 'Ground station link: LORA 868MHz / 1Hz downlink');
+    updateTelem();
+}
+
+// Auto-start sim when switching to live tab
+const origSwitchTab = switchTab;
+switchTab = function(tabName) {
+    origSwitchTab(tabName);
+    if (tabName === 'live') {
+        setTimeout(startSim, 500);
+    } else {
+        simRunning = false;
+    }
+};
 </script>
 
 </body>
