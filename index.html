@@ -975,142 +975,226 @@
             pointer-events: none;
         }
 
-        .telem-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            border-bottom: 1px solid var(--line);
-        }
 
-        .telem-card {
-            padding: 2.5rem 3rem;
-            border-right: 1px solid var(--line);
-            transition: background 0.3s;
-        }
 
-        .telem-card:last-child { border-right: none; }
-        .telem-card:hover { background: #060606; }
-
-        .telem-card .label {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.5rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-bottom: 0.75rem;
-        }
-
-        .telem-card .value {
-            font-family: 'Space Mono', monospace;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1;
-        }
-
-        .telem-card .value .u {
-            font-size: 0.4em;
-            font-weight: 400;
-            color: var(--dim);
-        }
-
-        .telem-card .sub {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--dim);
-            margin-top: 0.5rem;
-        }
-
-        .live-layout {
-            display: grid;
-            grid-template-columns: 200px 1fr 200px;
-            border-bottom: 1px solid var(--line);
-            min-height: 450px;
-        }
-
-        .live-side-strip {
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--line);
-        }
-
-        .live-side-strip:last-child {
-            border-right: none;
-            border-left: 1px solid var(--line);
-        }
-
-        .live-stat {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--line);
-            flex: 1;
-        }
-
-        .live-stat:last-child { border-bottom: none; }
-
-        .live-stat .label {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.45rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-bottom: 0.5rem;
-        }
-
-        .live-stat .value {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1;
-        }
-
-        .live-stat .value .u {
-            font-size: 0.55rem;
-            color: var(--dim);
-        }
-
-        .live-stat .sub {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            color: var(--dim);
-            margin-top: 0.4rem;
-        }
-
-        .live-feed-center {
-            display: flex;
-            align-items: stretch;
-            justify-content: center;
-            background: #020202;
-        }
-
-        .live-feed-center .cam-placeholder {
+        /* HUD */
+        .hud-container {
+            position: relative;
             width: 100%;
-            height: 100%;
-            max-width: none;
-            aspect-ratio: auto;
+            min-height: 85vh;
+            background: #020202;
+            overflow: hidden;
         }
 
-        .cam-overlay-top, .cam-overlay-bottom {
+        .hud-feed {
             position: absolute;
-            left: 0;
-            right: 0;
+            inset: 0;
             display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 1rem;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+        }
+
+        .hud-feed .feed-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: #1a1a1a;
+        }
+
+        .hud-scanline {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: rgba(74, 222, 128, 0.06);
+            animation: scanline 4s linear infinite;
             z-index: 1;
         }
 
-        .cam-overlay-top { top: 0; }
-        .cam-overlay-bottom { bottom: 0; }
-
-        .cam-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            letter-spacing: 2px;
-            color: #333;
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
-        .live-graph-section {
+        .hud-overlay {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .hud-overlay * { pointer-events: auto; }
+
+        .hud-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 3rem 0;
+            gap: 2rem;
+        }
+
+        .hud-mission-time {
+            text-align: center;
+        }
+
+        .hud-mission-time .met {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: white;
+            letter-spacing: 4px;
+        }
+
+        .hud-mission-time .phase-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 0.5rem;
+        }
+
+        .hud-middle {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            flex: 1;
+            padding: 0 2.5rem;
+        }
+
+        .hud-left, .hud-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2.5rem;
+            width: 200px;
+        }
+
+        .hud-right { align-items: flex-end; text-align: right; }
+
+        .hud-gauge {
+            position: relative;
+        }
+
+        .hud-gauge .hud-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .hud-gauge .hud-val {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 200;
+            color: white;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .hud-gauge .hud-val .hud-unit {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.3);
+            margin-left: 0.3rem;
+            letter-spacing: 2px;
+        }
+
+        .hud-gauge .hud-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: rgba(255,255,255,0.2);
+            margin-top: 0.3rem;
+        }
+
+        .hud-gauge.primary .hud-val {
+            font-size: 3.5rem;
+        }
+
+        .hud-center-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 1rem;
+        }
+
+        .hud-alt-bar {
+            width: 2px;
+            height: 300px;
+            background: rgba(255,255,255,0.06);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .hud-alt-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--green);
+            transition: height 0.3s;
+            box-shadow: 0 0 8px rgba(74,222,128,0.3);
+        }
+
+        .hud-alt-marker {
+            position: absolute;
+            left: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            color: rgba(255,255,255,0.15);
+            transform: translateY(50%);
+        }
+
+        .hud-bottom {
+            padding: 0 2.5rem 1.5rem;
+        }
+
+        .hud-event-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0.75rem 0;
+        }
+
+        .hud-event-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .hud-event-text.active {
+            color: var(--green);
+        }
+
+        .hud-progress {
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .hud-progress-fill {
+            height: 100%;
+            background: var(--green);
+            transition: width 0.3s;
+            box-shadow: 0 0 6px rgba(74,222,128,0.3);
+        }
+
+        .hud-graph-section {
+            background: var(--black);
             padding: 2rem 3rem;
+            border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
         }
 
@@ -1125,101 +1209,41 @@
             height: 100%;
         }
 
-        .telem-timeline {
-            background: #050505;
-            padding: 2rem 3rem;
+        .hud-log {
+            background: var(--black);
+            padding: 1.5rem 3rem;
             border-bottom: 1px solid var(--line);
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             line-height: 1.8;
             color: var(--dim);
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
         }
 
-        .telem-timeline .event {
+        .hud-log .event {
             display: flex;
             gap: 1.5rem;
         }
 
-        .telem-timeline .t {
+        .hud-log .t {
             color: var(--green);
-            min-width: 80px;
+            min-width: 70px;
         }
 
-        .telem-timeline .msg { color: var(--fg); }
-        .telem-timeline .dim { color: var(--dim); }
-
-        .ground-cam {
-            padding: 4rem 3rem;
-            border-bottom: 1px solid var(--line);
-            text-align: center;
-        }
-
-        .cam-placeholder {
-            width: 100%;
-            max-width: 800px;
-            aspect-ratio: 16/9;
-            background: #080808;
-            border: 1px solid #151515;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cam-placeholder .text {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            color: #333;
-        }
-
-        .cam-scanline {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: rgba(74, 222, 128, 0.1);
-            animation: scanline 3s linear infinite;
-        }
-
-        @keyframes scanline {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
-
-        .telem-footer {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .telem-footer-cell {
-            padding: 1.5rem 3rem;
-            border-right: 1px solid var(--line);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--dim);
-            letter-spacing: 1px;
-        }
-
-        .telem-footer-cell:last-child { border-right: none; }
-        .telem-footer-cell .val { color: var(--green); }
+        .hud-log .msg { color: var(--fg); }
+        .hud-log .dim { color: var(--dim); }
 
         @media (max-width: 900px) {
-            .telem-grid { grid-template-columns: 1fr; }
-            .telem-card { border-right: none; border-bottom: 1px solid var(--line); }
-            .telem-card:last-child { border-bottom: none; }
-            .live-layout { grid-template-columns: 1fr; min-height: auto; }
-            .live-side-strip { flex-direction: row; flex-wrap: wrap; border-right: none; border-left: none; border-bottom: 1px solid var(--line); }
-            .live-side-strip:last-child { border-left: none; }
-            .live-stat { flex: 1 1 45%; min-width: 140px; }
-            .live-feed-center { min-height: 250px; }
-            .live-graph-section { padding: 1.5rem; }
+            .hud-container { min-height: 70vh; }
+            .hud-overlay { min-height: 70vh; }
+            .hud-middle { padding: 0 1rem; }
+            .hud-left, .hud-right { width: 120px; gap: 1.5rem; }
+            .hud-gauge .hud-val { font-size: 1.8rem; }
+            .hud-gauge.primary .hud-val { font-size: 2.2rem; }
+            .hud-mission-time .met { font-size: 1.5rem; }
+            .hud-alt-bar { height: 200px; }
+            .hud-graph-section { padding: 1.5rem; }
             .alt-graph-container { height: 150px; }
             .live-header { padding: 3rem 1.5rem 1.5rem; }
             .ground-cam { padding: 3rem 1.5rem; }
@@ -1562,85 +1586,92 @@
 <!-- ==================== LIVE ==================== -->
 <div class="tab-panel" id="tab-live">
 
-    <div class="live-header">
-        <h2>Live Telemetry</h2>
-        <div class="live-status-bar">
-            <div class="live-dot sim" id="live-dot"></div>
-            <span class="live-status-text sim" id="live-status">SIMULATION MODE</span>
-        </div>
-        <button class="sim-start-btn" id="sim-start-btn" onclick="handleSimStart()">&#9654; START SIMULATION</button>
-    </div>
-
-    <!-- Main feed layout -->
-    <div class="live-layout">
-        <!-- Left telemetry strip -->
-        <div class="live-side-strip">
-            <div class="live-stat">
-                <div class="label">Altitude</div>
-                <div class="value" id="telem-alt">0 <span class="u">M</span></div>
-            </div>
-            <div class="live-stat">
-                <div class="label">Velocity</div>
-                <div class="value" id="telem-vel">0 <span class="u">M/S</span></div>
-                <div class="sub" id="telem-mach">MACH 0.00</div>
-            </div>
-            <div class="live-stat">
-                <div class="label">Acceleration</div>
-                <div class="value" id="telem-accel">0 <span class="u">G</span></div>
-            </div>
-            <div class="live-stat">
-                <div class="label">Mission Time</div>
-                <div class="value" id="telem-time">T-00:00</div>
-                <div class="sub" id="telem-event">AWAITING IGNITION</div>
-            </div>
+    <div class="hud-container">
+        <!-- Video feed background -->
+        <div class="hud-feed">
+            <div class="hud-scanline"></div>
+            <span class="feed-text">FEED AVAILABLE ON LAUNCH DAY</span>
         </div>
 
-        <!-- Center feed -->
-        <div class="live-feed-center">
-            <div class="cam-placeholder">
-                <div class="cam-scanline"></div>
-                <div class="cam-overlay-top">
-                    <span class="cam-label">PF-1 GROUND CAM</span>
-                    <span class="cam-label" id="telem-phase">PRE-LAUNCH</span>
-                </div>
-                <span class="text">FEED AVAILABLE ON LAUNCH DAY</span>
-                <div class="cam-overlay-bottom">
-                    <span class="cam-label">VEHICLE: PF-1 "GRACE"</span>
-                    <span class="cam-label" id="telem-signal">LORA 868MHZ / 1HZ</span>
+        <!-- HUD overlay -->
+        <div class="hud-overlay">
+            <!-- Top: mission time + status -->
+            <div class="hud-top">
+                <div class="hud-mission-time">
+                    <div class="met" id="telem-time">T-00:00</div>
+                    <div class="phase-label" id="telem-phase">PRE-LAUNCH</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right telemetry strip -->
-        <div class="live-side-strip">
-            <div class="live-stat">
-                <div class="label">Max Altitude</div>
-                <div class="value" id="telem-maxalt">0 <span class="u">M</span></div>
+            <!-- Middle: gauges left, alt bar center, gauges right -->
+            <div class="hud-middle">
+                <div class="hud-left">
+                    <div class="hud-gauge primary">
+                        <div class="hud-label">Altitude</div>
+                        <div class="hud-val" id="telem-alt">0<span class="hud-unit">M</span></div>
+                    </div>
+                    <div class="hud-gauge">
+                        <div class="hud-label">Velocity</div>
+                        <div class="hud-val" id="telem-vel">0<span class="hud-unit">M/S</span></div>
+                        <div class="hud-sub" id="telem-mach">MACH 0.00</div>
+                    </div>
+                    <div class="hud-gauge">
+                        <div class="hud-label">Acceleration</div>
+                        <div class="hud-val" id="telem-accel">0<span class="hud-unit">G</span></div>
+                    </div>
+                </div>
+
+                <div class="hud-center-col">
+                    <div class="hud-alt-bar">
+                        <div class="hud-alt-fill" id="hud-alt-fill" style="height: 0%"></div>
+                        <div class="hud-alt-marker" style="bottom: 0">0</div>
+                        <div class="hud-alt-marker" style="bottom: 25%">193</div>
+                        <div class="hud-alt-marker" style="bottom: 50%">385</div>
+                        <div class="hud-alt-marker" style="bottom: 75%">578</div>
+                        <div class="hud-alt-marker" style="bottom: 100%">770</div>
+                    </div>
+                    <button class="sim-start-btn" id="sim-start-btn" onclick="handleSimStart()">&#9654; START SIMULATION</button>
+                </div>
+
+                <div class="hud-right">
+                    <div class="hud-gauge">
+                        <div class="hud-label">Max Alt</div>
+                        <div class="hud-val" id="telem-maxalt">0<span class="hud-unit">M</span></div>
+                    </div>
+                    <div class="hud-gauge">
+                        <div class="hud-label">Max Vel</div>
+                        <div class="hud-val" id="telem-maxvel">0<span class="hud-unit">M/S</span></div>
+                    </div>
+                    <div class="hud-gauge">
+                        <div class="hud-label">Downrange</div>
+                        <div class="hud-val" id="telem-range">0<span class="hud-unit">M</span></div>
+                    </div>
+                </div>
             </div>
-            <div class="live-stat">
-                <div class="label">Max Velocity</div>
-                <div class="value" id="telem-maxvel">0 <span class="u">M/S</span></div>
-            </div>
-            <div class="live-stat">
-                <div class="label">Downrange</div>
-                <div class="value" id="telem-range">0 <span class="u">M</span></div>
-            </div>
-            <div class="live-stat">
-                <div class="label">Engine</div>
-                <div class="sub" style="color: var(--green);">PFV-1 HYBRID G27</div>
+
+            <!-- Bottom: event + progress -->
+            <div class="hud-bottom">
+                <div class="hud-event-bar">
+                    <span class="hud-event-text">PF-1 "GRACE"</span>
+                    <span class="hud-event-text active" id="telem-event">AWAITING IGNITION</span>
+                    <span class="hud-event-text" id="telem-signal">LORA 868MHZ</span>
+                </div>
+                <div class="hud-progress">
+                    <div class="hud-progress-fill" id="hud-progress" style="width: 0%"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Altitude graph -->
-    <div class="live-graph-section">
+    <div class="hud-graph-section">
         <div class="alt-graph-container">
             <canvas id="alt-graph" width="600" height="200"></canvas>
         </div>
     </div>
 
-    <!-- Event timeline -->
-    <div class="telem-timeline" id="telem-log">
+    <!-- Event log -->
+    <div class="hud-log" id="telem-log">
         <div class="event"><span class="t">T-00:00</span><span class="dim">System initialised. Awaiting launch sequence.</span></div>
     </div>
 
@@ -2014,18 +2045,24 @@ function updateTelem() {
     simMaxAlt = Math.max(simMaxAlt, absAlt);
     simMaxVel = Math.max(simMaxVel, absVel);
 
-    document.getElementById('telem-alt').innerHTML = `${absAlt.toLocaleString()} <span class="u">M</span>`;
-    document.getElementById('telem-vel').innerHTML = `${absVel} <span class="u">M/S</span>`;
+    document.getElementById('telem-alt').innerHTML = `${absAlt.toLocaleString()}<span class="hud-unit">M</span>`;
+    document.getElementById('telem-vel').innerHTML = `${absVel}<span class="hud-unit">M/S</span>`;
     const accelArrow = dvdt > 0.5 ? '&#9650; ' : dvdt < -0.5 ? '&#9660; ' : '';
-    document.getElementById('telem-accel').innerHTML = `${accelArrow}${Math.abs(accel).toFixed(1)} <span class="u">G</span>`;
+    document.getElementById('telem-accel').innerHTML = `${accelArrow}${Math.abs(accel).toFixed(1)}<span class="hud-unit">G</span>`;
     document.getElementById('telem-time').textContent = formatMET(t);
     document.getElementById('telem-phase').textContent = phase;
-    document.getElementById('telem-maxalt').innerHTML = `${simMaxAlt.toLocaleString()} <span class="u">M</span>`;
-    document.getElementById('telem-maxvel').innerHTML = `${simMaxVel} <span class="u">M/S</span>`;
+    document.getElementById('telem-maxalt').innerHTML = `${simMaxAlt.toLocaleString()}<span class="hud-unit">M</span>`;
+    document.getElementById('telem-maxvel').innerHTML = `${simMaxVel}<span class="hud-unit">M/S</span>`;
     document.getElementById('telem-mach').textContent = `MACH ${(absVel / 343).toFixed(2)}`;
 
     const downrange = Math.min(300, Math.round(t * 3));
-    document.getElementById('telem-range').innerHTML = `${downrange} <span class="u">M</span>`;
+    document.getElementById('telem-range').innerHTML = `${downrange}<span class="hud-unit">M</span>`;
+
+    // HUD altitude bar + progress
+    const altPct = Math.min(100, (absAlt / 770) * 100);
+    document.getElementById('hud-alt-fill').style.height = altPct + '%';
+    const progPct = Math.min(100, (t / 100) * 100);
+    document.getElementById('hud-progress').style.width = progPct + '%';
 
     altHistory.push({ t: t, alt: absAlt });
     drawAltGraph();
