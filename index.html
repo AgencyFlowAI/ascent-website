@@ -1014,44 +1014,15 @@
             color: var(--dim);
         }
 
-        .alt-bar-container {
+        .alt-graph-container {
             flex: 1;
             height: 200px;
             position: relative;
-            border-left: 1px solid #1a1a1a;
         }
 
-        .alt-bar-track {
-            position: absolute;
-            left: 0;
-            bottom: 0;
+        .alt-graph-container canvas {
             width: 100%;
             height: 100%;
-        }
-
-        .alt-bar-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to top, var(--green), rgba(74, 222, 128, 0.1));
-            transition: height 0.3s ease;
-        }
-
-        .alt-bar-target {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            border-top: 1px dashed #333;
-        }
-
-        .alt-bar-target-label {
-            position: absolute;
-            right: 0;
-            top: -16px;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            color: var(--dim);
         }
 
         .telem-timeline {
@@ -1153,7 +1124,7 @@
             .telem-card:last-child { border-bottom: none; }
             .alt-display { flex-direction: column; gap: 2rem; padding: 3rem 1.5rem; }
             .alt-number { min-width: auto; }
-            .alt-bar-container { width: 100%; height: 120px; }
+            .alt-graph-container { width: 100%; height: 150px; }
             .telem-footer { grid-template-columns: 1fr; }
             .telem-footer-cell { border-right: none; border-bottom: 1px solid var(--line); }
             .telem-footer-cell:last-child { border-bottom: none; }
@@ -1512,16 +1483,8 @@
             <div style="font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 4px; color: var(--dim); margin-bottom: 0.75rem;">ALTITUDE</div>
             <div class="alt-number" id="telem-alt">0 <span class="u">M</span></div>
         </div>
-        <div class="alt-bar-container">
-            <div class="alt-bar-track">
-                <div class="alt-bar-fill" id="alt-bar" style="height: 0%;"></div>
-                <div class="alt-bar-target" style="bottom: 100%;">
-                    <span class="alt-bar-target-label">1,000m TARGET</span>
-                </div>
-                <div class="alt-bar-target" style="bottom: 78%;">
-                    <span class="alt-bar-target-label">785m SIM APOGEE</span>
-                </div>
-            </div>
+        <div class="alt-graph-container">
+            <canvas id="alt-graph" width="600" height="200"></canvas>
         </div>
     </div>
 
@@ -1845,6 +1808,7 @@ let simStart = 0;
 let simMaxAlt = 0;
 let simMaxVel = 0;
 let simLoggedEvents = new Set();
+let altHistory = [];
 
 function lerpSim(t) {
     if (t <= SIM_PROFILE[0][0]) return SIM_PROFILE[0];
@@ -1917,8 +1881,8 @@ function updateTelem() {
     const downrange = Math.min(300, Math.round(t * 3.66));
     document.getElementById('telem-range').innerHTML = `${downrange} <span class="u">M</span>`;
 
-    const barPct = Math.min(100, (absAlt / 1000) * 100);
-    document.getElementById('alt-bar').style.height = barPct + '%';
+    altHistory.push({ t: t, alt: absAlt });
+    drawAltGraph();
 
     if (phase === 'LANDED') {
         document.getElementById('telem-event').textContent = 'MISSION COMPLETE';
@@ -1942,12 +1906,132 @@ function updateTelem() {
     requestAnimationFrame(updateTelem);
 }
 
+function drawAltGraph() {
+    const canvas = document.getElementById('alt-graph');
+    if (!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * 2;
+    canvas.height = rect.height * 2;
+    const ctx2 = canvas.getContext('2d');
+    ctx2.scale(2, 2);
+    const w = rect.width;
+    const h = rect.height;
+    const pad = { top: 20, right: 20, bottom: 25, left: 50 };
+    const gw = w - pad.left - pad.right;
+    const gh = h - pad.top - pad.bottom;
+
+    ctx2.clearRect(0, 0, w, h);
+
+    const maxTime = 90;
+    const maxAlt = 1000;
+
+    // Grid lines
+    ctx2.strokeStyle = '#111';
+    ctx2.lineWidth = 0.5;
+    for (let a = 0; a <= maxAlt; a += 200) {
+        const y = pad.top + gh - (a / maxAlt) * gh;
+        ctx2.beginPath();
+        ctx2.moveTo(pad.left, y);
+        ctx2.lineTo(pad.left + gw, y);
+        ctx2.stroke();
+
+        ctx2.fillStyle = '#333';
+        ctx2.font = '9px "Space Mono", monospace';
+        ctx2.textAlign = 'right';
+        ctx2.fillText(a + 'm', pad.left - 6, y + 3);
+    }
+
+    for (let s = 0; s <= maxTime; s += 20) {
+        const x = pad.left + (s / maxTime) * gw;
+        ctx2.beginPath();
+        ctx2.moveTo(x, pad.top);
+        ctx2.lineTo(x, pad.top + gh);
+        ctx2.stroke();
+
+        ctx2.fillStyle = '#333';
+        ctx2.font = '9px "Space Mono", monospace';
+        ctx2.textAlign = 'center';
+        ctx2.fillText(s + 's', x, pad.top + gh + 15);
+    }
+
+    // Target line
+    const targetY = pad.top + gh - (785 / maxAlt) * gh;
+    ctx2.strokeStyle = '#333';
+    ctx2.setLineDash([4, 4]);
+    ctx2.beginPath();
+    ctx2.moveTo(pad.left, targetY);
+    ctx2.lineTo(pad.left + gw, targetY);
+    ctx2.stroke();
+    ctx2.setLineDash([]);
+    ctx2.fillStyle = '#444';
+    ctx2.font = '8px "Space Mono", monospace';
+    ctx2.textAlign = 'left';
+    ctx2.fillText('785m APOGEE', pad.left + gw - 75, targetY - 5);
+
+    // Altitude line
+    if (altHistory.length > 1) {
+        // Gradient fill under line
+        const gradient = ctx2.createLinearGradient(0, pad.top, 0, pad.top + gh);
+        gradient.addColorStop(0, 'rgba(74, 222, 128, 0.15)');
+        gradient.addColorStop(1, 'rgba(74, 222, 128, 0)');
+
+        ctx2.beginPath();
+        ctx2.moveTo(pad.left + (altHistory[0].t / maxTime) * gw, pad.top + gh);
+        for (const p of altHistory) {
+            const x = pad.left + (p.t / maxTime) * gw;
+            const y = pad.top + gh - (p.alt / maxAlt) * gh;
+            ctx2.lineTo(x, y);
+        }
+        const lastP = altHistory[altHistory.length - 1];
+        ctx2.lineTo(pad.left + (lastP.t / maxTime) * gw, pad.top + gh);
+        ctx2.closePath();
+        ctx2.fillStyle = gradient;
+        ctx2.fill();
+
+        // Line
+        ctx2.beginPath();
+        ctx2.strokeStyle = '#4ade80';
+        ctx2.lineWidth = 2;
+        for (let i = 0; i < altHistory.length; i++) {
+            const x = pad.left + (altHistory[i].t / maxTime) * gw;
+            const y = pad.top + gh - (altHistory[i].alt / maxAlt) * gh;
+            if (i === 0) ctx2.moveTo(x, y);
+            else ctx2.lineTo(x, y);
+        }
+        ctx2.stroke();
+
+        // Current point
+        const last = altHistory[altHistory.length - 1];
+        const lx = pad.left + (last.t / maxTime) * gw;
+        const ly = pad.top + gh - (last.alt / maxAlt) * gh;
+        ctx2.beginPath();
+        ctx2.arc(lx, ly, 4, 0, Math.PI * 2);
+        ctx2.fillStyle = '#4ade80';
+        ctx2.fill();
+        ctx2.beginPath();
+        ctx2.arc(lx, ly, 7, 0, Math.PI * 2);
+        ctx2.strokeStyle = 'rgba(74, 222, 128, 0.3)';
+        ctx2.lineWidth = 2;
+        ctx2.stroke();
+    }
+
+    // Axes
+    ctx2.strokeStyle = '#222';
+    ctx2.lineWidth = 1;
+    ctx2.beginPath();
+    ctx2.moveTo(pad.left, pad.top);
+    ctx2.lineTo(pad.left, pad.top + gh);
+    ctx2.lineTo(pad.left + gw, pad.top + gh);
+    ctx2.stroke();
+}
+
 function startSim() {
     simRunning = true;
     simStart = Date.now();
     simMaxAlt = 0;
     simMaxVel = 0;
     simLoggedEvents.clear();
+    altHistory = [];
     document.getElementById('telem-log').innerHTML = '';
     addLogEvent(0, 'SIMULATION STARTED - Flight profile: PF-1 nominal');
     addLogEvent(0, 'Ground station link: LORA 868MHz / 1Hz downlink');
