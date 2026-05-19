@@ -1020,33 +1020,102 @@
             margin-top: 0.5rem;
         }
 
-        .alt-display {
-            padding: 4rem 3rem;
+        .live-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
             border-bottom: 1px solid var(--line);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 4rem;
+            min-height: 450px;
         }
 
-        .alt-number {
+        .live-side-strip {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--line);
+        }
+
+        .live-side-strip:last-child {
+            border-right: none;
+            border-left: 1px solid var(--line);
+        }
+
+        .live-stat {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--line);
+            flex: 1;
+        }
+
+        .live-stat:last-child { border-bottom: none; }
+
+        .live-stat .label {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(4rem, 10vw, 8rem);
+            font-size: 0.45rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .live-stat .value {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--white);
             line-height: 1;
-            min-width: 300px;
         }
 
-        .alt-number .u {
-            font-size: 0.3em;
-            font-weight: 400;
+        .live-stat .value .u {
+            font-size: 0.55rem;
             color: var(--dim);
         }
 
+        .live-stat .sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--dim);
+            margin-top: 0.4rem;
+        }
+
+        .live-feed-center {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            background: #020202;
+        }
+
+        .live-feed-center .cam-placeholder {
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            aspect-ratio: auto;
+        }
+
+        .cam-overlay-top, .cam-overlay-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            z-index: 1;
+        }
+
+        .cam-overlay-top { top: 0; }
+        .cam-overlay-bottom { bottom: 0; }
+
+        .cam-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: #333;
+        }
+
+        .live-graph-section {
+            padding: 2rem 3rem;
+            border-bottom: 1px solid var(--line);
+        }
+
         .alt-graph-container {
-            flex: 1;
+            width: 100%;
             height: 200px;
             position: relative;
         }
@@ -1085,14 +1154,6 @@
             padding: 4rem 3rem;
             border-bottom: 1px solid var(--line);
             text-align: center;
-        }
-
-        .ground-cam .tag {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.55rem;
-            letter-spacing: 6px;
-            color: var(--dim);
-            margin-bottom: 2rem;
         }
 
         .cam-placeholder {
@@ -1153,12 +1214,13 @@
             .telem-grid { grid-template-columns: 1fr; }
             .telem-card { border-right: none; border-bottom: 1px solid var(--line); }
             .telem-card:last-child { border-bottom: none; }
-            .alt-display { flex-direction: column; gap: 2rem; padding: 3rem 1.5rem; }
-            .alt-number { min-width: auto; }
-            .alt-graph-container { width: 100%; height: 150px; }
-            .telem-footer { grid-template-columns: 1fr; }
-            .telem-footer-cell { border-right: none; border-bottom: 1px solid var(--line); }
-            .telem-footer-cell:last-child { border-bottom: none; }
+            .live-layout { grid-template-columns: 1fr; min-height: auto; }
+            .live-side-strip { flex-direction: row; flex-wrap: wrap; border-right: none; border-left: none; border-bottom: 1px solid var(--line); }
+            .live-side-strip:last-child { border-left: none; }
+            .live-stat { flex: 1 1 45%; min-width: 140px; }
+            .live-feed-center { min-height: 250px; }
+            .live-graph-section { padding: 1.5rem; }
+            .alt-graph-container { height: 150px; }
             .live-header { padding: 3rem 1.5rem 1.5rem; }
             .ground-cam { padding: 3rem 1.5rem; }
         }
@@ -1509,71 +1571,77 @@
         <button class="sim-start-btn" id="sim-start-btn" onclick="handleSimStart()">&#9654; START SIMULATION</button>
     </div>
 
-    <!-- Altitude display -->
-    <div class="alt-display">
-        <div>
-            <div style="font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 4px; color: var(--dim); margin-bottom: 0.75rem;">ALTITUDE</div>
-            <div class="alt-number" id="telem-alt">0 <span class="u">M</span></div>
+    <!-- Main feed layout -->
+    <div class="live-layout">
+        <!-- Left telemetry strip -->
+        <div class="live-side-strip">
+            <div class="live-stat">
+                <div class="label">Altitude</div>
+                <div class="value" id="telem-alt">0 <span class="u">M</span></div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Velocity</div>
+                <div class="value" id="telem-vel">0 <span class="u">M/S</span></div>
+                <div class="sub" id="telem-mach">MACH 0.00</div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Acceleration</div>
+                <div class="value" id="telem-accel">0 <span class="u">G</span></div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Mission Time</div>
+                <div class="value" id="telem-time">T-00:00</div>
+                <div class="sub" id="telem-event">AWAITING IGNITION</div>
+            </div>
         </div>
+
+        <!-- Center feed -->
+        <div class="live-feed-center">
+            <div class="cam-placeholder">
+                <div class="cam-scanline"></div>
+                <div class="cam-overlay-top">
+                    <span class="cam-label">PF-1 GROUND CAM</span>
+                    <span class="cam-label" id="telem-phase">PRE-LAUNCH</span>
+                </div>
+                <span class="text">FEED AVAILABLE ON LAUNCH DAY</span>
+                <div class="cam-overlay-bottom">
+                    <span class="cam-label">VEHICLE: PF-1 "GRACE"</span>
+                    <span class="cam-label" id="telem-signal">LORA 868MHZ / 1HZ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right telemetry strip -->
+        <div class="live-side-strip">
+            <div class="live-stat">
+                <div class="label">Max Altitude</div>
+                <div class="value" id="telem-maxalt">0 <span class="u">M</span></div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Max Velocity</div>
+                <div class="value" id="telem-maxvel">0 <span class="u">M/S</span></div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Downrange</div>
+                <div class="value" id="telem-range">0 <span class="u">M</span></div>
+            </div>
+            <div class="live-stat">
+                <div class="label">Engine</div>
+                <div class="sub" style="color: var(--green);">PFV-1 HYBRID G27</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Altitude graph -->
+    <div class="live-graph-section">
         <div class="alt-graph-container">
             <canvas id="alt-graph" width="600" height="200"></canvas>
-        </div>
-    </div>
-
-    <!-- Telemetry cards -->
-    <div class="telem-grid">
-        <div class="telem-card">
-            <div class="label">Velocity</div>
-            <div class="value" id="telem-vel">0 <span class="u">M/S</span></div>
-            <div class="sub" id="telem-mach">MACH 0.00</div>
-        </div>
-        <div class="telem-card">
-            <div class="label">Acceleration</div>
-            <div class="value" id="telem-accel">0 <span class="u">G</span></div>
-            <div class="sub" id="telem-phase">PRE-LAUNCH</div>
-        </div>
-        <div class="telem-card">
-            <div class="label">Mission Time</div>
-            <div class="value" id="telem-time">T-00:00</div>
-            <div class="sub" id="telem-event">AWAITING IGNITION</div>
-        </div>
-    </div>
-
-    <!-- Second row -->
-    <div class="telem-grid">
-        <div class="telem-card">
-            <div class="label">Max Altitude</div>
-            <div class="value" id="telem-maxalt">0 <span class="u">M</span></div>
-        </div>
-        <div class="telem-card">
-            <div class="label">Max Velocity</div>
-            <div class="value" id="telem-maxvel">0 <span class="u">M/S</span></div>
-        </div>
-        <div class="telem-card">
-            <div class="label">Downrange</div>
-            <div class="value" id="telem-range">0 <span class="u">M</span></div>
         </div>
     </div>
 
     <!-- Event timeline -->
     <div class="telem-timeline" id="telem-log">
         <div class="event"><span class="t">T-00:00</span><span class="dim">System initialised. Awaiting launch sequence.</span></div>
-    </div>
-
-    <!-- Ground camera -->
-    <div class="ground-cam">
-        <div class="tag">GROUND CAMERA</div>
-        <div class="cam-placeholder">
-            <div class="cam-scanline"></div>
-            <span class="text">FEED AVAILABLE ON LAUNCH DAY</span>
-        </div>
-    </div>
-
-    <!-- Footer stats -->
-    <div class="telem-footer">
-        <div class="telem-footer-cell">VEHICLE: <span class="val">PF-1 "GRACE"</span></div>
-        <div class="telem-footer-cell">ENGINE: <span class="val">PFV-1 HYBRID G27</span></div>
-        <div class="telem-footer-cell">SIGNAL: <span class="val" id="telem-signal">LORA 868MHZ / 1HZ</span></div>
     </div>
 
 </div>
