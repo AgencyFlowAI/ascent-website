@@ -1868,11 +1868,14 @@ function lerpSim(t) {
         const a = SIM_PROFILE[i], b = SIM_PROFILE[i + 1];
         if (t >= a[0] && t <= b[0]) {
             const f = (t - a[0]) / (b[0] - a[0]);
+            const dt = b[0] - a[0];
+            const dv = b[2] - a[2];
+            const accelG = dt > 0 ? (dv / dt) / 9.81 : 0;
             return [
                 t,
                 a[1] + (b[1] - a[1]) * f,
                 a[2] + (b[2] - a[2]) * f,
-                a[3] + (b[3] - a[3]) * f,
+                accelG,
                 b[4],
                 null
             ];
