@@ -995,11 +995,25 @@
             z-index: 0;
         }
 
-        .hud-feed .feed-text {
+        .feed-countdown-wrap {
+            text-align: center;
+        }
+
+        .feed-countdown {
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 4px;
-            color: #1a1a1a;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 6px;
+            line-height: 1;
+        }
+
+        .feed-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: rgba(255, 255, 255, 0.2);
+            margin: 1rem 0;
         }
 
         .hud-scanline {
@@ -1587,84 +1601,14 @@
 <div class="tab-panel" id="tab-live">
 
     <div class="hud-container">
-        <!-- Video feed background -->
         <div class="hud-feed">
             <div class="hud-scanline"></div>
-            <span class="feed-text" id="feed-countdown">FEED AVAILABLE ON LAUNCH DAY</span>
-        </div>
-
-        <!-- HUD overlay -->
-        <div class="hud-overlay">
-            <!-- Top: mission time + status -->
-            <div class="hud-top">
-                <div class="hud-mission-time">
-                    <div class="met" id="telem-time">T-00:00</div>
-                    <div class="phase-label" id="telem-phase">PRE-LAUNCH</div>
-                </div>
-            </div>
-
-            <!-- Middle: gauges left, alt bar center, gauges right -->
-            <div class="hud-middle">
-                <div class="hud-left">
-                    <div class="hud-gauge primary">
-                        <div class="hud-label">Altitude</div>
-                        <div class="hud-val" id="telem-alt">0<span class="hud-unit">M</span></div>
-                    </div>
-                    <div class="hud-gauge">
-                        <div class="hud-label">Velocity</div>
-                        <div class="hud-val" id="telem-vel">0<span class="hud-unit">M/S</span></div>
-                        <div class="hud-sub" id="telem-mach">MACH 0.00</div>
-                    </div>
-                    <div class="hud-gauge">
-                        <div class="hud-label">Acceleration</div>
-                        <div class="hud-val" id="telem-accel">0<span class="hud-unit">G</span></div>
-                    </div>
-                </div>
-
-                <div class="hud-center-col">
-                    <button class="sim-start-btn" id="sim-start-btn" onclick="handleSimStart()">&#9654; START SIMULATION</button>
-                </div>
-
-                <div class="hud-right">
-                    <div class="hud-gauge">
-                        <div class="hud-label">Max Alt</div>
-                        <div class="hud-val" id="telem-maxalt">0<span class="hud-unit">M</span></div>
-                    </div>
-                    <div class="hud-gauge">
-                        <div class="hud-label">Max Vel</div>
-                        <div class="hud-val" id="telem-maxvel">0<span class="hud-unit">M/S</span></div>
-                    </div>
-                    <div class="hud-gauge">
-                        <div class="hud-label">Downrange</div>
-                        <div class="hud-val" id="telem-range">0<span class="hud-unit">M</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom: event + progress -->
-            <div class="hud-bottom">
-                <div class="hud-event-bar">
-                    <span class="hud-event-text">PF-1 "GRACE"</span>
-                    <span class="hud-event-text active" id="telem-event">AWAITING IGNITION</span>
-                    <span class="hud-event-text" id="telem-signal">LORA 868MHZ</span>
-                </div>
-                <div class="hud-progress">
-                    <div class="hud-progress-fill" id="hud-progress" style="width: 0%"></div>
-                </div>
+            <div class="feed-countdown-wrap">
+                <div class="feed-label">PF-1 "GRACE" - LAUNCH</div>
+                <div class="feed-countdown" id="feed-countdown">T-00D 00:00:00</div>
+                <div class="feed-label">RHOSSILI BEACH - 22 JUNE 2026</div>
             </div>
         </div>
-    </div>
-
-    <!-- Altitude graph -->
-    <div class="hud-graph-section">
-        <div class="alt-graph-container">
-            <canvas id="alt-graph" width="600" height="200"></canvas>
-        </div>
-    </div>
-
-    <!-- Event log -->
-    <div class="hud-log" id="telem-log">
-        <div class="event"><span class="t">T-00:00</span><span class="dim">System initialised. Awaiting launch sequence.</span></div>
     </div>
 
 </div>
