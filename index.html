@@ -1870,14 +1870,15 @@ function lerpSim(t) {
             const f = (t - a[0]) / (b[0] - a[0]);
             const dt = b[0] - a[0];
             const dv = b[2] - a[2];
-            const accelG = dt > 0 ? (dv / dt) / 9.81 + 1 : 1;
+            const dvdt = dt > 0 ? dv / dt : 0;
+            const accelG = dvdt / 9.81 + 1;
             return [
                 t,
                 a[1] + (b[1] - a[1]) * f,
                 a[2] + (b[2] - a[2]) * f,
                 accelG,
                 b[4],
-                null
+                dvdt
             ];
         }
     }
@@ -1909,7 +1910,7 @@ function updateTelem() {
     const elapsed = (Date.now() - simStart) / 1000;
     const t = Math.min(elapsed, SIM_PROFILE[SIM_PROFILE.length - 1][0]);
 
-    const [time, alt, vel, accel, phase] = lerpSim(t);
+    const [time, alt, vel, accel, phase, dvdt] = lerpSim(t);
 
     // Check for events at this time
     for (const p of SIM_PROFILE) {
@@ -1925,7 +1926,8 @@ function updateTelem() {
 
     document.getElementById('telem-alt').innerHTML = `${absAlt.toLocaleString()} <span class="u">M</span>`;
     document.getElementById('telem-vel').innerHTML = `${absVel} <span class="u">M/S</span>`;
-    document.getElementById('telem-accel').innerHTML = `${Math.abs(accel).toFixed(1)} <span class="u">G</span>`;
+    const accelArrow = dvdt > 0.5 ? '&#9650; ' : dvdt < -0.5 ? '&#9660; ' : '';
+    document.getElementById('telem-accel').innerHTML = `${accelArrow}${Math.abs(accel).toFixed(1)} <span class="u">G</span>`;
     document.getElementById('telem-time').textContent = formatMET(t);
     document.getElementById('telem-phase').textContent = phase;
     document.getElementById('telem-maxalt').innerHTML = `${simMaxAlt.toLocaleString()} <span class="u">M</span>`;
