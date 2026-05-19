@@ -1719,18 +1719,6 @@ tabs.forEach(t => {
     });
 });
 
-// URL routing - load correct tab from path or SPA redirect
-let initPath = sessionStorage.getItem('spa-redirect');
-if (initPath) {
-    sessionStorage.removeItem('spa-redirect');
-    history.replaceState(null, '', initPath);
-}
-const pathTab = (initPath || window.location.pathname).replace('/ascent-website/', '').replace('/', '') || 'home';
-const validTabs = ['home', 'vehicles', 'roadmap', 'live', 'mission', 'about'];
-if (validTabs.includes(pathTab) && pathTab !== 'home') {
-    switchTab(pathTab);
-}
-
 // Handle browser back/forward
 window.addEventListener('popstate', (e) => {
     const tab = e.state?.tab || 'home';
@@ -2117,6 +2105,18 @@ switchTab = function(tabName) {
         simRunning = false;
     }
 };
+
+// URL routing - load correct tab from path or SPA redirect (must be after all overrides)
+let initPath = sessionStorage.getItem('spa-redirect');
+if (initPath) {
+    sessionStorage.removeItem('spa-redirect');
+    history.replaceState(null, '', initPath);
+}
+const pathTab = (initPath || window.location.pathname).replace('/ascent-website/', '').replace('/', '') || 'home';
+const validTabs = ['home', 'vehicles', 'roadmap', 'live', 'mission', 'about'];
+if (validTabs.includes(pathTab) && pathTab !== 'home') {
+    switchTab(pathTab);
+}
 </script>
 
 </body>
