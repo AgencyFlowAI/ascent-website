@@ -944,6 +944,33 @@
 
         .live-status-text.sim { color: #fbbf24; }
 
+        .sim-start-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            border: 1px solid #fbbf24;
+            color: #fbbf24;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sim-start-btn:hover {
+            background: rgba(251, 191, 36, 0.08);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+        }
+
+        .sim-start-btn.running {
+            border-color: var(--dim);
+            color: var(--dim);
+            pointer-events: none;
+        }
+
         .telem-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -1475,6 +1502,7 @@
             <div class="live-dot sim" id="live-dot"></div>
             <span class="live-status-text sim" id="live-status">SIMULATION MODE</span>
         </div>
+        <button class="sim-start-btn" id="sim-start-btn" onclick="handleSimStart()">&#9654; START SIMULATION</button>
     </div>
 
     <!-- Altitude display -->
@@ -1917,6 +1945,8 @@ function updateTelem() {
         document.getElementById('telem-event').textContent = 'MISSION COMPLETE';
         document.getElementById('telem-phase').textContent = 'LANDED';
         addLogEvent(82, 'MISSION COMPLETE - ALL NOMINAL');
+        simRunning = false;
+        resetSimBtn();
         return;
     }
 
@@ -2062,18 +2092,29 @@ function startSim() {
     simLoggedEvents.clear();
     altHistory = [];
     document.getElementById('telem-log').innerHTML = '';
+    const btn = document.getElementById('sim-start-btn');
+    btn.classList.add('running');
+    btn.innerHTML = '&#9654; SIMULATION RUNNING';
     addLogEvent(0, 'SIMULATION STARTED - Flight profile: PF-1 nominal');
     addLogEvent(0, 'Ground station link: LORA 868MHz / 1Hz downlink');
     updateTelem();
 }
 
-// Auto-start sim when switching to live tab
+function resetSimBtn() {
+    const btn = document.getElementById('sim-start-btn');
+    btn.classList.remove('running');
+    btn.innerHTML = '&#9654; RESTART SIMULATION';
+}
+
+function handleSimStart() {
+    startSim();
+}
+
+// Stop sim when leaving live tab
 const origSwitchTab = switchTab;
 switchTab = function(tabName) {
     origSwitchTab(tabName);
-    if (tabName === 'live') {
-        setTimeout(startSim, 500);
-    } else {
+    if (tabName !== 'live') {
         simRunning = false;
     }
 };
