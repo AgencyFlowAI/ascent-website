@@ -2002,8 +2002,8 @@ function drawAltGraph() {
 
     ctx2.clearRect(0, 0, w, h);
 
-    const maxTime = 90;
-    const maxAlt = 1000;
+    const maxTime = 110;
+    const maxAlt = 850;
 
     // Grid lines
     ctx2.strokeStyle = '#111';
@@ -2035,7 +2035,7 @@ function drawAltGraph() {
     }
 
     // Target line
-    const targetY = pad.top + gh - (785 / maxAlt) * gh;
+    const targetY = pad.top + gh - (770 / maxAlt) * gh;
     ctx2.strokeStyle = '#333';
     ctx2.setLineDash([4, 4]);
     ctx2.beginPath();
@@ -2046,7 +2046,7 @@ function drawAltGraph() {
     ctx2.fillStyle = '#444';
     ctx2.font = '8px "Space Mono", monospace';
     ctx2.textAlign = 'left';
-    ctx2.fillText('785m APOGEE', pad.left + gw - 75, targetY - 5);
+    ctx2.fillText('770m APOGEE', pad.left + gw - 75, targetY - 5);
 
     // Altitude line
     if (altHistory.length > 1) {
