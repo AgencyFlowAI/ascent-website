@@ -1397,12 +1397,12 @@
         <br>
         T+00.0s IGNITION ...................... Pc 17.7 bar<br>
         T+00.1s LIFTOFF ....................... 28.0 N<br>
-        T+01.0s RAIL CLEAR ................... 4 m/s<br>
-        T+13.0s BURNOUT ...................... 83 m/s<br>
-        T+20.5s APOGEE ....................... 785 m AGL<br>
-        T+20.6s DROGUE DEPLOY ................ <span class="prompt">OK</span><br>
-        T+44.7s MAIN DEPLOY @ 200m ........... <span class="prompt">OK</span><br>
-        T+66.0s LANDING ...................... 230 m downrange<br>
+        T+01.0s RAIL CLEAR ................... 15 m/s<br>
+        T+08.0s BURNOUT ...................... 98 m/s<br>
+        T+20.0s APOGEE ....................... 782 m AGL<br>
+        T+24.0s DROGUE DEPLOY ................ <span class="prompt">OK</span><br>
+        T+78.0s MAIN DEPLOY @ 230m ........... <span class="prompt">OK</span><br>
+        T+135s  LANDING ...................... <span class="prompt">NOMINAL</span><br>
         <br>
         <span class="prompt">STATUS: NOMINAL</span>
     </div>
@@ -1827,50 +1827,61 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // Live telemetry simulation
 const SIM_PROFILE = [
     // [time_s, alt_m, vel_ms, accel_g, phase, event]
-    // Generated from numerical integration: 28N thrust, 2.0kg wet, 0.7kg propellant
-    [0, 0, 0, 1.43, "IGNITION", "IGNITION - Pc 17.7 bar"],
-    [0.1, 0, 0.5, 1.43, "POWERED FLIGHT", "LIFTOFF - 28.0 N"],
-    [1, 2.2, 4.4, 1.47, "POWERED FLIGHT", "RAIL CLEAR - 4 m/s"],
-    [2, 8.9, 9.1, 1.51, "POWERED FLIGHT", null],
-    [3, 20.6, 14.3, 1.54, "POWERED FLIGHT", null],
-    [4, 37.7, 19.8, 1.58, "POWERED FLIGHT", null],
-    [5, 60.4, 25.7, 1.62, "POWERED FLIGHT", null],
-    [6, 89.3, 32.0, 1.66, "POWERED FLIGHT", null],
-    [7, 124.6, 38.6, 1.69, "POWERED FLIGHT", null],
-    [8, 166.6, 45.5, 1.72, "POWERED FLIGHT", null],
-    [9, 215.7, 52.7, 1.75, "POWERED FLIGHT", null],
-    [10, 272.1, 60.1, 1.77, "POWERED FLIGHT", null],
-    [11, 336.1, 67.7, 1.78, "POWERED FLIGHT", null],
-    [12, 407.7, 75.5, 1.79, "POWERED FLIGHT", null],
-    [13, 487.1, 83.3, 1.80, "BURNOUT", "BURNOUT - 83 m/s"],
-    [13.1, 495.4, 82.1, -0.39, "COAST", null],
-    [13.5, 527.1, 76.8, -0.34, "COAST", null],
-    [14, 563.9, 70.3, -0.29, "COAST", null],
-    [15, 628.0, 58.2, -0.20, "COAST", null],
-    [16, 680.4, 46.8, -0.13, "COAST", null],
-    [17, 721.7, 36.0, -0.07, "COAST", null],
-    [18, 752.4, 25.7, -0.04, "COAST", null],
-    [19, 773.0, 15.6, -0.01, "COAST", null],
-    [20, 783.6, 5.7, 0, "COAST", null],
-    [20.5, 785.2, 1.2, 0, "APOGEE", "APOGEE - 785m AGL"],
-    [20.6, 785.2, 0.1, 0, "DESCENT", "DROGUE DEPLOY - OK"],
-    [22.5, 768.5, -16.2, 0.38, "DESCENT", null],
-    [25.5, 702.8, -25.0, 0.90, "DESCENT", null],
-    [28.5, 625.3, -26.2, 0.99, "DESCENT", null],
-    [31.5, 546.4, -26.3, 1.00, "DESCENT", null],
-    [34.5, 467.4, -26.3, 1.00, "DESCENT", null],
-    [37.5, 388.4, -26.3, 1.00, "DESCENT", null],
-    [40.5, 309.4, -26.3, 1.00, "DESCENT", null],
-    [43.5, 230.3, -26.3, 1.00, "DESCENT", null],
-    [44.7, 200.0, -26.3, 1.00, "DESCENT", "MAIN DEPLOY @ 200m - OK"],
-    [45.2, 191.3, -12.7, 1.95, "DESCENT", null],
-    [46.7, 176.2, -9.2, 1.03, "DESCENT", null],
-    [50, 146.0, -9.1, 1.00, "DESCENT", null],
-    [55, 100.5, -9.1, 1.00, "DESCENT", null],
-    [60, 55.0, -9.1, 1.00, "DESCENT", null],
-    [64, 18.6, -9.1, 1.00, "DESCENT", null],
-    [65.5, 4.9, -9.1, 1.00, "DESCENT", null],
-    [66, 0, 0, 1.00, "LANDED", "LANDING - 230m downrange"],
+    // Based on OpenRocket Simulation 2 data
+    [0, 0, 0, 0, "IGNITION", "IGNITION - Pc 17.7 bar"],
+    [0.1, 0, 2, 2.5, "POWERED FLIGHT", "LIFTOFF - 28.0 N"],
+    [1, 5, 15, 2.8, "POWERED FLIGHT", "RAIL CLEAR - 15 m/s"],
+    [2, 18, 32, 3.2, "POWERED FLIGHT", null],
+    [3, 40, 50, 3.6, "POWERED FLIGHT", null],
+    [4, 72, 68, 4.0, "POWERED FLIGHT", null],
+    [5, 112, 82, 4.3, "POWERED FLIGHT", null],
+    [6, 158, 93, 4.5, "POWERED FLIGHT", null],
+    [7, 210, 100, 4.2, "POWERED FLIGHT", null],
+    [7.5, 235, 100, 3.8, "POWERED FLIGHT", null],
+    [8, 262, 98, 3.0, "BURNOUT", "BURNOUT - 98 m/s"],
+    [8.1, 272, 97, -0.3, "COAST", null],
+    [9, 350, 86, -0.25, "COAST", null],
+    [10, 430, 74, -0.18, "COAST", null],
+    [11, 500, 63, -0.13, "COAST", null],
+    [12, 560, 52, -0.09, "COAST", null],
+    [13, 610, 42, -0.06, "COAST", null],
+    [14, 650, 33, -0.04, "COAST", null],
+    [15, 685, 25, -0.02, "COAST", null],
+    [16, 715, 18, -0.01, "COAST", null],
+    [17, 740, 12, -0.01, "COAST", null],
+    [18, 760, 7, 0, "COAST", null],
+    [19, 775, 3, 0, "COAST", null],
+    [20, 782, 0.5, 0, "APOGEE", "APOGEE - 782m AGL"],
+    [20.5, 782, -1, 0, "DESCENT", null],
+    [24, 770, -5, 0.1, "DESCENT", "DROGUE DEPLOY - OK"],
+    [26, 750, -10, 0.5, "DESCENT", null],
+    [28, 730, -10, 1.0, "DESCENT", null],
+    [32, 690, -10, 1.0, "DESCENT", null],
+    [36, 650, -10, 1.0, "DESCENT", null],
+    [40, 610, -10, 1.0, "DESCENT", null],
+    [45, 560, -10, 1.0, "DESCENT", null],
+    [50, 510, -10, 1.0, "DESCENT", null],
+    [55, 460, -10, 1.0, "DESCENT", null],
+    [60, 410, -10, 1.0, "DESCENT", null],
+    [65, 360, -10, 1.0, "DESCENT", null],
+    [70, 310, -10, 1.0, "DESCENT", null],
+    [75, 260, -10, 1.0, "DESCENT", null],
+    [78, 230, -10, 1.0, "DESCENT", "MAIN DEPLOY @ 230m - OK"],
+    [78.5, 225, -5, 2.0, "DESCENT", null],
+    [80, 218, -4, 1.0, "DESCENT", null],
+    [85, 198, -4, 1.0, "DESCENT", null],
+    [90, 178, -4, 1.0, "DESCENT", null],
+    [95, 158, -4, 1.0, "DESCENT", null],
+    [97, 150, -4, 1.0, "DESCENT", null],
+    [100, 138, -4, 1.0, "DESCENT", null],
+    [105, 118, -4, 1.0, "DESCENT", null],
+    [110, 98, -4, 1.0, "DESCENT", null],
+    [115, 78, -4, 1.0, "DESCENT", null],
+    [120, 58, -4, 1.0, "DESCENT", null],
+    [125, 38, -4, 1.0, "DESCENT", null],
+    [130, 18, -4, 1.0, "DESCENT", null],
+    [133, 6, -3, 1.0, "DESCENT", null],
+    [135, 0, 0, 1.0, "LANDED", "LANDING - NOMINAL"],
 ];
 
 let simRunning = false;
@@ -1953,7 +1964,7 @@ function updateTelem() {
     document.getElementById('telem-maxvel').innerHTML = `${simMaxVel} <span class="u">M/S</span>`;
     document.getElementById('telem-mach').textContent = `MACH ${(absVel / 343).toFixed(2)}`;
 
-    const downrange = Math.min(230, Math.round(t * 3.5));
+    const downrange = Math.min(400, Math.round(t * 3));
     document.getElementById('telem-range').innerHTML = `${downrange} <span class="u">M</span>`;
 
     altHistory.push({ t: t, alt: absAlt });
@@ -1962,7 +1973,7 @@ function updateTelem() {
     if (phase === 'LANDED') {
         document.getElementById('telem-event').textContent = 'MISSION COMPLETE';
         document.getElementById('telem-phase').textContent = 'LANDED';
-        addLogEvent(66, 'MISSION COMPLETE - ALL NOMINAL');
+        addLogEvent(135, 'MISSION COMPLETE - ALL NOMINAL');
         simRunning = false;
         resetSimBtn();
         return;
