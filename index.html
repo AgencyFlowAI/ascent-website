@@ -1782,7 +1782,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 const SIM_PROFILE = [
     // [time_s, alt_m, vel_ms, accel_g, phase, event]
     [0, 0, 0, 0, "IGNITION", "IGNITION - Pc 17.7 bar"],
-    [0.1, 0.1, 2, 2.0, "POWERED FLIGHT", "LIFTOFF - 28.0 N"],
+    [0.05, 0, 2, 2.0, "POWERED FLIGHT", "LIFTOFF - 28.0 N"],
     [1, 6, 12, 2.0, "POWERED FLIGHT", "RAIL CLEAR - 12 m/s"],
     [3, 40, 40, 2.0, "POWERED FLIGHT", null],
     [5, 100, 70, 2.0, "POWERED FLIGHT", null],
@@ -1800,7 +1800,9 @@ const SIM_PROFILE = [
     [48, 500, -12, -0.1, "DESCENT", null],
     [55, 200, -10, -0.1, "DESCENT", "MAIN DEPLOY @ 200m - OK"],
     [60, 120, -5, -0.05, "DESCENT", null],
-    [70, 40, -4, -0.02, "DESCENT", null],
+    [68, 50, -4, -0.02, "DESCENT", null],
+    [75, 20, -3, -0.01, "DESCENT", null],
+    [80, 5, -1, 0, "DESCENT", null],
     [82, 0, 0, 0, "LANDED", "LANDING - 300m downrange"],
 ];
 
