@@ -1590,7 +1590,7 @@
         <!-- Video feed background -->
         <div class="hud-feed">
             <div class="hud-scanline"></div>
-            <span class="feed-text">FEED AVAILABLE ON LAUNCH DAY</span>
+            <span class="feed-text" id="feed-countdown">FEED AVAILABLE ON LAUNCH DAY</span>
         </div>
 
         <!-- HUD overlay -->
@@ -2201,6 +2201,25 @@ function drawAltGraph() {
     ctx2.lineTo(pad.left + gw, pad.top + gh);
     ctx2.stroke();
 }
+
+// Launch countdown
+const LAUNCH_DATE = new Date('2026-06-22T08:00:00Z');
+function updateFeedCountdown() {
+    const now = new Date();
+    const diff = LAUNCH_DATE - now;
+    if (diff <= 0) {
+        document.getElementById('feed-countdown').textContent = 'LAUNCH DAY';
+        return;
+    }
+    const days = Math.floor(diff / 86400000);
+    const hrs = Math.floor((diff % 86400000) / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+    document.getElementById('feed-countdown').textContent =
+        `T-${days}D ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}  TO LAUNCH`;
+}
+updateFeedCountdown();
+setInterval(updateFeedCountdown, 1000);
 
 function startSim() {
     simRunning = true;
