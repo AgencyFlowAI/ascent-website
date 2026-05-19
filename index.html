@@ -948,25 +948,30 @@
             align-items: center;
             gap: 0.6rem;
             margin-top: 1.5rem;
-            padding: 0.75rem 2rem;
-            background: transparent;
-            border: 1px solid #fbbf24;
-            color: #fbbf24;
+            padding: 1rem 3rem;
+            background: var(--green);
+            border: none;
+            color: #030303;
             font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
+            font-weight: 700;
             letter-spacing: 3px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.2);
         }
 
         .sim-start-btn:hover {
-            background: rgba(251, 191, 36, 0.08);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+            background: #6ee7a0;
+            box-shadow: 0 0 50px rgba(74, 222, 128, 0.35);
+            transform: translateY(-1px);
         }
 
         .sim-start-btn.running {
-            border-color: var(--dim);
+            background: transparent;
+            border: 1px solid var(--dim);
             color: var(--dim);
+            box-shadow: none;
             pointer-events: none;
         }
 
