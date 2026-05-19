@@ -174,6 +174,23 @@
             height: 32px;
         }
 
+        /* SUPPORT BUTTON */
+        .support-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 3px;
+            color: var(--green);
+            text-decoration: none;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            padding: 0.4rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .support-btn:hover {
+            background: rgba(74, 222, 128, 0.08);
+            border-color: rgba(74, 222, 128, 0.4);
+        }
+
         /* TAB BAR */
         .tab-bar {
             display: flex;
@@ -870,6 +887,59 @@
             color: var(--light);
         }
 
+        /* SUPPORT SECTION */
+        .support-section {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 6rem 3rem;
+            text-align: center;
+        }
+
+        .support-inner {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .support-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 6px;
+            color: var(--dim);
+            margin-bottom: 2rem;
+        }
+
+        .support-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .support-desc {
+            font-size: 0.95rem;
+            color: var(--mid);
+            line-height: 1.9;
+            margin-bottom: 2.5rem;
+        }
+
+        .support-cta {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: #030303;
+            background: var(--green);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            transition: all 0.3s;
+        }
+
+        .support-cta:hover {
+            background: #6ee7a0;
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.2);
+            transform: translateY(-1px);
+        }
+
         /* FOOTER */
         footer {
             display: grid;
@@ -1344,6 +1414,7 @@
 
 <nav>
     <a href="#" class="logo" data-tab="home"><img src="ascent_logo.svg" alt="ASCENT" class="logo-img">ASCENT</a>
+    <a href="https://ko-fi.com/ascent" target="_blank" class="support-btn">SUPPORT</a>
 </nav>
 
 <!-- HERO (always visible) -->
@@ -1687,6 +1758,15 @@
                 <div class="label">CONTACT</div>
                 <div class="value">caden.d.bell@gmail.com</div>
             </div>
+        </div>
+    </div>
+
+    <div class="support-section">
+        <div class="support-inner">
+            <div class="support-tag">SUPPORT THE MISSION</div>
+            <h3 class="support-title">Help ASCENT reach space</h3>
+            <p class="support-desc">ASCENT is entirely self-funded. Every donation goes directly towards materials, propellant, and components. Even a few pounds makes a difference.</p>
+            <a href="https://ko-fi.com/ascent" target="_blank" class="support-cta">SUPPORT ON KO-FI</a>
         </div>
     </div>
 
